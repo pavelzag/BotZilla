@@ -1,9 +1,9 @@
 import json
 import requests
 import time
+import urllib
 import bugzilla_call
 import configuration
-
 
 
 TOKEN = configuration.get_config(parameter_type='telegram-creds',parameter_name='token')
@@ -22,10 +22,26 @@ def get_json_from_url(url):
     return js
 
 
-def get_updates():
+def get_updates(offset=None):
     url = URL + "getUpdates"
+    if offset:
+        url += "?offset={}".format(offset)
     js = get_json_from_url(url)
     return js
+
+
+def get_last_update_id(updates):
+    update_ids = []
+    for update in updates["result"]:
+        update_ids.append(int(update["update_id"]))
+    return max(update_ids)
+
+
+def echo_all(updates, url):
+    for update in updates["result"]:
+        # text = update["message"]["text"]
+        chat = update["message"]["chat"]["id"]
+        send_message(url, chat)
 
 
 def get_last_chat_id_and_text(updates):
@@ -37,23 +53,21 @@ def get_last_chat_id_and_text(updates):
 
 
 def send_message(text, chat_id):
+    text = urllib.parse.quote_plus(text)
     url = URL + "sendMessage?text={}&chat_id={}".format(text, chat_id)
     get_url(url)
 
 
-text, chat = get_last_chat_id_and_text(get_updates())
-send_message(text, chat)
-
-
 def main():
-    last_textchat = (None, None)
+    last_update_id = None
     while True:
-        bug, chat = get_last_chat_id_and_text(get_updates())
-        if (bug, chat) != last_textchat:
-            query_dict = bugzilla_call.query_builder()
-            bug = bugzilla_call.send_query(query=query_dict)
-            send_message(bug, chat)
-            last_textchat = (bug, chat)
+        updates = get_updates(last_update_id)
+        if len(updates["result"]) > 0:
+            last_update_id = get_last_update_id(updates) + 1
+            user_name = bugzilla_call.extract_user(updates=updates)
+            reply = bugzilla_call.query_builder(reporter=user_name)
+            url = bugzilla_call.send_query(reply)
+            echo_all(updates,url)
         time.sleep(0.5)
 
 
