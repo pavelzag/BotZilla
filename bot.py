@@ -66,8 +66,9 @@ def main():
         updates = get_updates(last_update_id)
         if len(updates["result"]) > 0:
             last_update_id = get_last_update_id(updates) + 1
-            user_name = bugzilla_call.extract_user(updates=updates)
-            reply = bugzilla_call.query_builder(reporter=user_name)
+            requested_user_name = bugzilla_call.extract_user(updates=updates)
+            requested_status = bugzilla_call.extract_status(updates=updates)
+            reply = bugzilla_call.query_builder(status=requested_status, reporter=requested_user_name)
             bugs_list = bugzilla_call.send_query(reply)
             bugs_messages = bugs_handler.bug_msg_builder(bugs_list)
             if isinstance(bugs_messages, str):

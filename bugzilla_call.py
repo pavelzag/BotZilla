@@ -1,6 +1,6 @@
 import bugzilla
 import configuration
-
+import re
 
 URL = "partner-bugzilla.redhat.com"
 default_product = "Red Hat CloudForms Management Engine"
@@ -27,11 +27,25 @@ def query_builder(product=default_product,
 
 
 def extract_user(updates):
-    return updates['result'][0]['message']['text']
+    full_text_string = updates['result'][0]['message']['text']
+    match = re.search(r'[\w\.-]+@[\w\.-]+', full_text_string)
+    return match.group(0)
+
+
+def extract_status(updates):
+    full_text_string = updates['result'][0]['message']['text']
+    try:
+        cut_string = full_text_string.split("status:", 1)[1]
+    except IndexError:
+        return default_status
+    return cut_string
 
 
 def send_query(query):
-    bugs = bzapi.query(query_builder(reporter=query['email1']))
+    selected_reporter = query['email1']
+    selected_bug_status = query['bug_status']
+    # bugs = bzapi.query(query_builder(reporter=selected_reporter))
+    bugs = bzapi.query(query_builder(status=selected_bug_status))
     if not bugs:
         return "There are no bugs"
     else:
