@@ -5,7 +5,7 @@ import configuration
 URL = "partner-bugzilla.redhat.com"
 default_product = "Red Hat CloudForms Management Engine"
 default_component = "Web UI"
-default_status = "CLOSED"
+default_status = "OPEN"
 default_reporter = "pzagalsk@redhat.com"
 user = configuration.get_config(parameter_type='redhat-creds', parameter_name='user')
 password = configuration.get_config(parameter_type='redhat-creds', parameter_name='password')
@@ -35,5 +35,6 @@ def send_query(query):
     if not bugs:
         return "There are no bugs"
     else:
-        for bug in bugs:
-            return bug.weburl
+        return bugs
+        # for bug in bugs:
+        #     return bug.weburl

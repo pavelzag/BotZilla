@@ -3,6 +3,7 @@ import requests
 import time
 import urllib
 import bugzilla_call
+import bugs_handler
 import configuration
 
 
@@ -23,9 +24,9 @@ def get_json_from_url(url):
 
 
 def get_updates(offset=None):
-    url = URL + "getUpdates"
+    url = URL + "getUpdates?timeout=100"
     if offset:
-        url += "?offset={}".format(offset)
+        url += "&offset={}".format(offset)
     js = get_json_from_url(url)
     return js
 
@@ -61,13 +62,19 @@ def send_message(text, chat_id):
 def main():
     last_update_id = None
     while True:
+        print("getting updates")
         updates = get_updates(last_update_id)
         if len(updates["result"]) > 0:
             last_update_id = get_last_update_id(updates) + 1
             user_name = bugzilla_call.extract_user(updates=updates)
             reply = bugzilla_call.query_builder(reporter=user_name)
-            url = bugzilla_call.send_query(reply)
-            echo_all(updates,url)
+            bugs_list = bugzilla_call.send_query(reply)
+            bugs_messages = bugs_handler.bug_msg_builder(bugs_list)
+            if isinstance(bugs_messages, str):
+                echo_all(updates, bugs_messages)
+            else:
+                for bug in bugs_messages:
+                    echo_all(updates,bug)
         time.sleep(0.5)
 
 
