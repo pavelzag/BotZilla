@@ -40,7 +40,6 @@ def get_last_update_id(updates):
 
 def echo_all(updates, url):
     for update in updates["result"]:
-        # text = update["message"]["text"]
         chat = update["message"]["chat"]["id"]
         send_message(url, chat)
 
@@ -50,7 +49,7 @@ def get_last_chat_id_and_text(updates):
     last_update = num_updates - 1
     text = updates["result"][last_update]["message"]["text"]
     chat_id = updates["result"][last_update]["message"]["chat"]["id"]
-    return (text, chat_id)
+    return text, chat_id
 
 
 def send_message(text, chat_id):
@@ -68,7 +67,8 @@ def main():
             last_update_id = get_last_update_id(updates) + 1
             requested_user_name = bugzilla_call.extract_user(updates=updates)
             requested_status = bugzilla_call.extract_status(updates=updates)
-            reply = bugzilla_call.query_builder(status=requested_status, reporter=requested_user_name)
+            requested_assigned_to = bugzilla_call.extract_assignee(updates=updates)
+            reply = bugzilla_call.query_builder(status=requested_status, reporter=requested_user_name, assigned_to=requested_assigned_to)
             bugs_list = bugzilla_call.send_query(reply)
             bugs_messages = bugs_handler.bug_msg_builder(bugs_list)
             if isinstance(bugs_messages, str):
