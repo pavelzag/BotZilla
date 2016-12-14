@@ -32,14 +32,17 @@ def query_builder(product=default_product,
 def extract_user(updates):
     full_text_string = updates['result'][0]['message']['text']
     match = re.search(r'[\w\.-]+@[\w\.-]+', full_text_string)
-    before_cut = match.group(0)
-    return before_cut.split(" ")[0]
+    if match == None:
+        return "None"
+    else:
+        before_cut = match.group(0)
+        return before_cut.split(" ")[0]
 
 
 def extract_status(updates):
     full_text_string = updates['result'][0]['message']['text']
     try:
-        cut_string = full_text_string.split("status:", 1)[1].split(" ")[0]
+        cut_string = full_text_string.split("status:", 1)[1].split(" ")[0].upper()
     except IndexError:
         return default_status
     return cut_string

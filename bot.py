@@ -71,9 +71,14 @@ def main():
             reply = bugzilla_call.query_builder(status=requested_status, reporter=requested_user_name, assigned_to=requested_assigned_to)
             bugs_list = bugzilla_call.send_query(reply)
             bugs_messages = bugs_handler.bug_msg_builder(bugs_list)
+            num_of_bugs = len(bugs_messages)
             if isinstance(bugs_messages, str):
                 echo_all(updates, bugs_messages)
             else:
+                if num_of_bugs == 1:
+                    echo_all(updates, "There is " + str(num_of_bugs) + " " + requested_status.lower() + " bug")
+                elif num_of_bugs > 1:
+                    echo_all(updates, "There are " + str(num_of_bugs) + " " + requested_status.lower() + " bugs")
                 for bug in bugs_messages:
                     echo_all(updates,bug)
         time.sleep(0.5)
