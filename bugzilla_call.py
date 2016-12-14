@@ -31,12 +31,23 @@ def query_builder(product=default_product,
 
 def extract_user(updates):
     full_text_string = updates['result'][0]['message']['text']
-    match = re.search(r'[\w\.-]+@[\w\.-]+', full_text_string)
-    if match == None:
-        return "None"
-    else:
-        before_cut = match.group(0)
-        return before_cut.split(" ")[0]
+    try:
+        cut_string = full_text_string.split("user:", 1)[1].split(" ")[0]
+        if '@' not in cut_string:
+            requested_user_name = cut_string + configuration.get_config(parameter_type='redhat-creds',
+                                                                                 parameter_name='domain')
+    except IndexError:
+        return default_reporter
+    return requested_user_name
+
+# def extract_user(updates):
+#     full_text_string = updates['result'][0]['message']['text']
+#     match = re.search(r'[\w\.-]+@[\w\.-]+', full_text_string)
+#     if match == None:
+#         return "None"
+#     else:
+#         before_cut = match.group(0)
+#         return before_cut.split(" ")[0]
 
 
 def extract_status(updates):
