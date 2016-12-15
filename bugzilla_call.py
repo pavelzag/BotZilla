@@ -21,7 +21,6 @@ def query_builder(product=default_product,
                   reporter="",
                   assigned_to=""
                   ):
-
     bzapi.interactive_login(user=user, password=password)
     query_dict = bzapi.build_query(
         product=product, component=component, status=status, reporter=reporter, assigned_to=assigned_to
@@ -29,10 +28,17 @@ def query_builder(product=default_product,
     return query_dict
 
 
-def extract_user(updates):
+def extract_default(updates, type):
     full_text_string = updates['result'][0]['message']['text']
+    cut_string = full_text_string.split(type + ":", 1)[1].split(" ")[0]
+    if cut_string == '':
+        cut_string = full_text_string.split(type + ": ", 1)[1].split(" ")[0]
+    return cut_string
+
+
+def extract_user(updates):
     try:
-        cut_string = full_text_string.split("user:", 1)[1].split(" ")[0]
+        cut_string = extract_default(updates, type='user').lower()
         if '@' not in cut_string:
             requested_user_name = cut_string + configuration.get_config(parameter_type='redhat-creds',
                                                                                  parameter_name='domain')
@@ -42,21 +48,19 @@ def extract_user(updates):
 
 
 def extract_component(updates):
-    full_text_string = updates['result'][0]['message']['text']
     try:
-        cut_string = full_text_string.split("component:", 1)[1].split(" ")[0]
+        cut_string = extract_default(updates, type='component')
     except IndexError:
         return default_component
     return cut_string
 
 
 def extract_status(updates):
-    full_text_string = updates['result'][0]['message']['text']
     try:
-        cut_string = full_text_string.split("status:", 1)[1].split(" ")[0].upper()
+        cut_string = extract_default(updates, type='status')
     except IndexError:
         return default_status
-    return cut_string
+    return cut_string.upper()
 
 
 def extract_assigned_to(updates):
@@ -71,8 +75,8 @@ def extract_assigned_to(updates):
 def query_params(updates):
     bugzilla_user = extract_user(updates)
     bugzilla_status = extract_status(updates)
-    bugzilla_assigned_to =  extract_assigned_to(updates)
-    bugzilla_component =  extract_component(updates)
+    bugzilla_assigned_to = extract_assigned_to(updates)
+    bugzilla_component = extract_component(updates)
     return bugzilla_user, bugzilla_status, bugzilla_assigned_to, bugzilla_component
 
 
