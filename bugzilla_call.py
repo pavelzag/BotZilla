@@ -46,7 +46,7 @@ def extract_component(updates):
     try:
         cut_string = full_text_string.split("component:", 1)[1].split(" ")[0]
     except IndexError:
-        return default_status
+        return default_component
     return cut_string
 
 
