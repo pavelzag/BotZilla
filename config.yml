@@ -1,0 +1,9 @@
+redhat-creds:
+    user: 'dajo@redhat.com'
+    password: 'Cl0udq3!'
+    domain: '@redhat.com'
+    bugzilla-url:  'partner-bugzilla.redhat.com'
+telegram-creds:
+    token: '237231760:AAHl9WVSWhLsbzEIH0Aw16fg0k32w9Xxgyg'
+
+

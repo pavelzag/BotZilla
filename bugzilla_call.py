@@ -1,8 +1,8 @@
 import bugzilla
 import configuration
-import re
 
-URL = "partner-bugzilla.redhat.com"
+# URL = "partner-bugzilla.redhat.com"
+URL = configuration.get_config(parameter_type='redhat-creds', parameter_name='bugzilla-url')
 default_product = "Red Hat CloudForms Management Engine"
 default_component = "Web UI"
 default_status = "OPEN"
@@ -16,7 +16,7 @@ bzapi = bugzilla.Bugzilla(URL)
 
 
 def query_builder(product=default_product,
-                  component=default_component,
+                  component="",
                   status="",
                   reporter="",
                   assigned_to=""
@@ -40,14 +40,14 @@ def extract_user(updates):
         return default_reporter
     return requested_user_name
 
-# def extract_user(updates):
-#     full_text_string = updates['result'][0]['message']['text']
-#     match = re.search(r'[\w\.-]+@[\w\.-]+', full_text_string)
-#     if match == None:
-#         return "None"
-#     else:
-#         before_cut = match.group(0)
-#         return before_cut.split(" ")[0]
+
+def extract_component(updates):
+    full_text_string = updates['result'][0]['message']['text']
+    try:
+        cut_string = full_text_string.split("component:", 1)[1].split(" ")[0]
+    except IndexError:
+        return default_status
+    return cut_string
 
 
 def extract_status(updates):
@@ -59,7 +59,7 @@ def extract_status(updates):
     return cut_string
 
 
-def extract_assignee(updates):
+def extract_assigned_to(updates):
     full_text_string = updates['result'][0]['message']['text']
     try:
         cut_string = full_text_string.split("assigned:", 1)[1]
@@ -68,12 +68,23 @@ def extract_assignee(updates):
     return cut_string
 
 
+def query_params(updates):
+    bugzilla_user = extract_user(updates)
+    bugzilla_status = extract_status(updates)
+    bugzilla_assigned_to =  extract_assigned_to(updates)
+    bugzilla_component =  extract_component(updates)
+    return bugzilla_user, bugzilla_status, bugzilla_assigned_to, bugzilla_component
+
+
 def send_query(query):
     selected_reporter = query['email2']
     selected_assigned_to = query['email1']
     selected_bug_status = query['bug_status']
-    bugs = bzapi.query(query_builder(status=selected_bug_status, assigned_to=selected_assigned_to,
-                                     reporter=selected_reporter))
+    selected_component = query['component'][0]
+    bugs = bzapi.query(query_builder(status=selected_bug_status,
+                                     assigned_to=selected_assigned_to,
+                                     reporter=selected_reporter,
+                                     component=selected_component))
     if not bugs:
         return "There are no bugs"
     else:

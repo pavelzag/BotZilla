@@ -65,21 +65,25 @@ def main():
         updates = get_updates(last_update_id)
         if len(updates["result"]) > 0:
             last_update_id = get_last_update_id(updates) + 1
-            requested_user_name = bugzilla_call.extract_user(updates=updates)
-            requested_status = bugzilla_call.extract_status(updates=updates)
-            requested_assigned_to = bugzilla_call.extract_assignee(updates=updates)
-            reply = bugzilla_call.query_builder(status=requested_status, reporter=requested_user_name, assigned_to=requested_assigned_to)
-            bugs_list = bugzilla_call.send_query(reply)
-            bugs_messages = bugs_handler.bug_msg_builder(bugs_list)
-            num_of_bugs = len(bugs_messages)
-            if isinstance(bugs_messages, str):
-                echo_all(updates, bugs_messages)
+            requested_user_name, requested_status, requested_assigned_to, requested_component = \
+                bugzilla_call.query_params(updates)
+            bugzilla_query = bugzilla_call.query_builder(
+                component=requested_component,
+                status=requested_status,
+                reporter=requested_user_name,
+                assigned_to=requested_assigned_to)
+            bugs_list = bugzilla_call.send_query(bugzilla_query)
+            bugs_messages_to_send = bugs_handler.bug_msg_builder(bugs_list)
+            num_of_bugs = len(bugs_messages_to_send)
+            print('sending ' + str(num_of_bugs) + ' messages')
+            if isinstance(bugs_messages_to_send, str):
+                echo_all(updates, bugs_messages_to_send)
             else:
                 if num_of_bugs == 1:
                     echo_all(updates, "There is " + str(num_of_bugs) + " " + requested_status.lower() + " bug")
                 elif num_of_bugs > 1:
                     echo_all(updates, "There are " + str(num_of_bugs) + " " + requested_status.lower() + " bugs")
-                for bug in bugs_messages:
+                for bug in bugs_messages_to_send:
                     echo_all(updates,bug)
         time.sleep(0.5)
 
