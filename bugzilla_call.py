@@ -32,6 +32,8 @@ def extract_default(updates, type):
     cut_string = full_text_string.split(type + ":", 1)[1].split(" ")[0]
     if cut_string == '':
         cut_string = full_text_string.split(type + ": ", 1)[1].split(" ")[0]
+    if '_' in cut_string:
+        cut_string = cut_string.replace("_", " ")
     return cut_string
 
 
