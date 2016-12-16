@@ -8,3 +8,5 @@ def get_config(parameter_type, parameter_name):
         return cfg['bugzilla-creds'][parameter_name]
     elif parameter_type == 'telegram-creds':
         return cfg['telegram-creds'][parameter_name]
+    elif parameter_type == 'default-params':
+        return cfg['default-params'][parameter_name]

@@ -2,8 +2,8 @@ import bugzilla
 import configuration
 
 URL = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='bugzilla-url')
-default_product = "Red Hat CloudForms Management Engine"
-default_component = "Web UI"
+default_product = configuration.get_config(parameter_type='default-params', parameter_name='default_product')
+default_component = configuration.get_config(parameter_type='default-params', parameter_name='default_component')
 default_status = ""
 default_reporter = ""
 default_assignee = ""
