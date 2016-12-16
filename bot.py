@@ -61,7 +61,7 @@ def send_message(text, chat_id):
 def main():
     last_update_id = None
     while True:
-        print("getting updates")
+        print("getting new messages")
         updates = get_updates(last_update_id)
         if len(updates["result"]) > 0:
             last_update_id = get_last_update_id(updates) + 1
@@ -74,7 +74,10 @@ def main():
                 assigned_to=requested_assigned_to)
             bugs_list = bugzilla_call.send_query(bugzilla_query)
             bugs_messages_to_send = bugs_handler.bug_msg_builder(bugs_list)
-            num_of_bugs = len(bugs_messages_to_send)
+            if not type(bugs_messages_to_send) == str:
+                num_of_bugs = len(bugs_messages_to_send)
+            else:
+                num_of_bugs = 0
             print('sending ' + str(num_of_bugs) + ' messages')
             if isinstance(bugs_messages_to_send, str):
                 echo_all(updates, bugs_messages_to_send)

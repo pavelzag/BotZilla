@@ -1,15 +1,14 @@
 import bugzilla
 import configuration
 
-# URL = "partner-bugzilla.redhat.com"
-URL = configuration.get_config(parameter_type='redhat-creds', parameter_name='bugzilla-url')
+URL = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='bugzilla-url')
 default_product = "Red Hat CloudForms Management Engine"
 default_component = "Web UI"
-default_status = "OPEN"
+default_status = ""
 default_reporter = ""
 default_assignee = ""
-user = configuration.get_config(parameter_type='redhat-creds', parameter_name='user')
-password = configuration.get_config(parameter_type='redhat-creds', parameter_name='password')
+user = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='user')
+password = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='password')
 
 
 bzapi = bugzilla.Bugzilla(URL)
@@ -40,7 +39,7 @@ def extract_user(updates):
     try:
         cut_string = extract_default(updates, type='user').lower()
         if '@' not in cut_string:
-            requested_user_name = cut_string + configuration.get_config(parameter_type='redhat-creds',
+            requested_user_name = cut_string + configuration.get_config(parameter_type='bugzilla-creds',
                                                                                  parameter_name='domain')
     except IndexError:
         return default_reporter

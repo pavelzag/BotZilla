@@ -1,9 +1,7 @@
-redhat-creds:
+bugzilla-creds:
     user: ''
     password: ''
-    domain: ''
+    domain: '@domain.com'
     bugzilla-url:  ''
 telegram-creds:
-    token: ''
-
-
+    token: 'TELEGRAM-TOKEN'
