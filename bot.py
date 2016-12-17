@@ -38,12 +38,6 @@ def get_last_update_id(updates):
     return max(update_ids)
 
 
-def echo_all(updates, url):
-    for update in updates["result"]:
-        chat = update["message"]["chat"]["id"]
-        send_message(url, chat)
-
-
 def get_last_chat_id_and_text(updates):
     num_updates = len(updates["result"])
     last_update = num_updates - 1
@@ -52,9 +46,10 @@ def get_last_chat_id_and_text(updates):
     return text, chat_id
 
 
-def send_message(text, chat_id):
+def send_message(updates, text):
+    chat = updates['result'][0]['message']['chat']['id']
     text = urllib.parse.quote_plus(text)
-    url = URL + "sendMessage?text={}&chat_id={}".format(text, chat_id)
+    url = URL + "sendMessage?text={}&chat_id={}".format(text, chat)
     get_url(url)
 
 
@@ -80,14 +75,14 @@ def main():
                 num_of_bugs = 0
             print('sending ' + str(num_of_bugs) + ' messages')
             if isinstance(bugs_messages_to_send, str):
-                echo_all(updates, bugs_messages_to_send)
+                send_message(updates, bugs_messages_to_send)
             else:
                 if num_of_bugs == 1:
-                    echo_all(updates, "There is " + str(num_of_bugs) + " " + requested_status.lower() + " bug")
+                    send_message(updates, "There is " + str(num_of_bugs) + " " + requested_status.lower() + " bug")
                 elif num_of_bugs > 1:
-                    echo_all(updates, "There are " + str(num_of_bugs) + " " + requested_status.lower() + " bugs")
+                    send_message(updates, "There are " + str(num_of_bugs) + " " + requested_status.lower() + " bugs")
                 for bug in bugs_messages_to_send:
-                    echo_all(updates,bug)
+                    send_message(updates, bug)
         time.sleep(0.5)
 
 

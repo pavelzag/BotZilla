@@ -14,16 +14,9 @@ password = configuration.get_config(parameter_type='bugzilla-creds', parameter_n
 bzapi = bugzilla.Bugzilla(URL)
 
 
-def query_builder(product=default_product,
-                  component="",
-                  status="",
-                  reporter="",
-                  assigned_to=""
-                  ):
+def query_builder(**kwargs):
     bzapi.interactive_login(user=user, password=password)
-    query_dict = bzapi.build_query(
-        product=product, component=component, status=status, reporter=reporter, assigned_to=assigned_to
-    )
+    query_dict = bzapi.build_query(**kwargs)
     return query_dict
 
 
