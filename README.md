@@ -20,24 +20,24 @@ $ pip install pyyaml
 ### Config file
 In order to work, Botzilla requires the following keys:
 
-bugzilla-creds:
-    user: '<yourbugzillauser@domain.com>'
-    password: '<yourbugzillappassword>'
-    domain: '@domain.com'
-    bugzilla-url: 'bugzilla-url.domain.com'
+- bugzilla-creds:
+    - user: '<yourbugzillauser@domain.com>'
+    - password: '<yourbugzillappassword>'
+    - domain: '@domain.com'
+    - bugzilla-url: 'bugzilla-url.domain.com'
 
-telegram-creds:
-    token: '<telegramtoken>'
-
-default-params:
-    default_product: '<default_product>'
-    default_component: '<default_component>'
+- telegram-creds:
+    - token: '<telegramtoken>'
+    
+- default-params:
+  - default_product: '<default_product>'
+  - default_component: '<default_component>'
 
 
 ### Containerize Botzilla
 To containerize Botzilla do te following steps:
 
-- Clone the bot:
+- Clone the bot: 
 git pull https://github.com/pavelzag/BotZilla.git -f
 
 - Edit the config.yml according to your Bugzilla and Telegram params
@@ -50,7 +50,6 @@ docker run -tid botzilla
 
 user: bugzilla_user status: new
 component: Web_UI user: bugzilla_qa assigned_to: bugzilla_dev
-
 
 ### License
 
