@@ -21,17 +21,17 @@ $ pip install pyyaml
 In order to work, Botzilla requires the following keys:
 
 - bugzilla-creds:
-    - user: '<yourbugzillauser@domain.com>'
-    - password: '<yourbugzillappassword>'
+    - user: 'yourbugzillauser@domain.com'
+    - password: 'yourbugzillappassword'
     - domain: '@domain.com'
     - bugzilla-url: 'bugzilla-url.domain.com'
 
 - telegram-creds:
-    - token: '<telegramtoken>'
+    - token: 'telegramtoken'
     
 - default-params:
-  - default_product: '<default_product>'
-  - default_component: '<default_component>'
+  - default_product: 'default_product'
+  - default_component: 'default_component'
 
 
 ### Containerize Botzilla
@@ -49,6 +49,7 @@ docker run -tid botzilla
 ### Query examples:
 
 user: bugzilla_user status: new
+
 component: Web_UI user: bugzilla_qa assigned_to: bugzilla_dev
 
 ### License
