@@ -35,7 +35,7 @@ In order to work, Botzilla requires the following keys:
 
 
 ### Containerize Botzilla
-To containerize Botzilla do te following steps:
+To containerize Botzilla do the following steps:
 
 - Clone the bot: 
 git pull https://github.com/pavelzag/BotZilla.git -f
@@ -54,6 +54,6 @@ component: Web_UI user: bugzilla_qa assigned_to: bugzilla_dev
 ### License
 
 Botzilla is free to use. Any feedback is welcome!
-Feel free to ping me with any question, suggestion!
+Feel free to ping me with any questions and suggestions!
 Pavel Zagalsky
 @pavelzagalsky

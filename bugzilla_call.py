@@ -1,5 +1,6 @@
 import bugzilla
 import configuration
+import re
 
 URL = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='bugzilla-url')
 default_product = configuration.get_config(parameter_type='default-params', parameter_name='default_product')
@@ -20,20 +21,37 @@ def query_builder(**kwargs):
     return query_dict
 
 
-def extract_default(updates, type):
+def extract_params(updates, type):
     full_text_string = updates['result'][0]['message']['text']
-    cut_string = full_text_string.split(type + ":", 1)[1].split(" ")[0]
-    if cut_string == '':
-        cut_string = full_text_string.split(type + ": ", 1)[1].split(" ")[0]
-    if "on_qa" not in cut_string and "on_qa" not in cut_string:
-        if '_' in cut_string:
-            cut_string = cut_string.replace("_", " ")
-    return cut_string
+    if type == 'user':
+        full_text_string = full_text_string.lower()
+    params_list = re.findall(r'(\w+)\s*:\s*((?:\w+\b\s*)+)(?!\s*:)', full_text_string)
+    for param in params_list:
+        if type in param:
+            parameter, name = param
+            return name.replace(' ', '')
+    else:
+        return ''
+
+
+# def extract_default(updates, type):
+#     full_text_string = updates['result'][0]['message']['text']
+#
+#     update_dict = re.findall(r'(\w+):((?:(?!\w+:).)*)', full_text_string)
+#     cut_string = full_text_string.split(type + ":", 1)[1].split(" ")[0]
+#     if cut_string == '':
+#         cut_string = full_text_string.split(type + ": ", 1)[1].split(" ")[0]
+#     if "on_qa" not in cut_string and "on_dev" not in cut_string:
+#         if '_' in cut_string:
+#             cut_string = cut_string.replace("_", " ")
+#     return cut_string
 
 
 def extract_user(updates):
     try:
-        cut_string = extract_default(updates, type='user').lower()
+        cut_string = extract_params(updates, type='user').lower()
+        if cut_string == '':
+            return default_reporter
         if '@' not in cut_string:
             requested_user_name = cut_string + configuration.get_config(parameter_type='bugzilla-creds',
                                                                                  parameter_name='domain')
@@ -44,15 +62,18 @@ def extract_user(updates):
 
 def extract_component(updates):
     try:
-        cut_string = extract_default(updates, type='component')
+        cut_string = extract_params(updates, type='component')
     except IndexError:
+        return default_component
+    cut_string = cut_string.replace('_', ' ')
+    if cut_string == None:
         return default_component
     return cut_string
 
 
 def extract_status(updates):
     try:
-        cut_string = extract_default(updates, type='status')
+        cut_string = extract_params(updates, type='status')
     except IndexError:
         return default_status
     return cut_string.upper()
@@ -77,6 +98,8 @@ def query_params(updates):
 
 def send_query(query):
     selected_reporter = query['email2']
+    if not selected_reporter:
+        return "A reporter must be selected"
     selected_assigned_to = query['email1']
     selected_bug_status = query['bug_status']
     selected_component = query['component'][0]
