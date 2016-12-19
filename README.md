@@ -54,6 +54,6 @@ component: Web_UI user: bugzilla_qa assigned_to: bugzilla_dev
 ### License
 
 Botzilla is free to use. Any feedback is welcome!
-Feel free to ping me with any questions and suggestions!
+Feel free to ping me with any question or suggestion!
 Pavel Zagalsky
 @pavelzagalsky

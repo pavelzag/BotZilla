@@ -36,7 +36,6 @@ def extract_params(updates, type):
 
 # def extract_default(updates, type):
 #     full_text_string = updates['result'][0]['message']['text']
-#
 #     update_dict = re.findall(r'(\w+):((?:(?!\w+:).)*)', full_text_string)
 #     cut_string = full_text_string.split(type + ":", 1)[1].split(" ")[0]
 #     if cut_string == '':

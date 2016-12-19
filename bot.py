@@ -85,6 +85,5 @@ def main():
                     send_message(updates, bug)
         time.sleep(0.5)
 
-
 if __name__ == '__main__':
     main()
