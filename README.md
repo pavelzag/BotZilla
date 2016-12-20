@@ -51,6 +51,12 @@ docker run -tid botzilla
 user: bugzilla_user status: new
 component: Web_UI user: bugzilla_qa assigned_to: bugzilla_dev
 
+<!--![My image](username.github.com/repository/img/image.jpg)-->
+![My image](https://raw.githubusercontent.com/pavelzag/BotZilla/master/Screenshots/Screenshot1.png)
+![My image](https://raw.githubusercontent.com/pavelzag/BotZilla/master/Screenshots/Screenshot2.png)
+![My image](https://raw.githubusercontent.com/pavelzag/BotZilla/master/Screenshots/Screenshot3.png)
+
+
 ### License
 
 Botzilla is free to use. Any feedback is welcome!
