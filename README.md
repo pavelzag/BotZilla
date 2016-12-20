@@ -48,8 +48,8 @@ docker run -tid botzilla
 
 ### Query examples:
 
-user: bugzilla_user status: new
-component: Web_UI user: bugzilla_qa assigned_to: bugzilla_dev
+- user: bugzilla_user status: new
+- component: Web_UI user: bugzilla_qa assigned_to: bugzilla_dev
 
 <!--![My image](username.github.com/repository/img/image.jpg)-->
 ![My image](https://raw.githubusercontent.com/pavelzag/BotZilla/master/Screenshots/Screenshot1.png)
