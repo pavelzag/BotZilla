@@ -1,6 +1,6 @@
 # Botzilla
 
-Botzilla is a simple Telegram bot that allows querying for Bugzilla data using simple text queries.
+Botzilla is a simple Telegram bot that allows querying for Bugzilla data using simple text queries and getting a description of the bug and its corresponding link.
 Currently available the following query fields:
 
  - user
