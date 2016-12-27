@@ -22,7 +22,7 @@ def query_builder(**kwargs):
 
 
 def extract_params(updates, type):
-    full_text_string = updates['result'][0]['message']['text']
+    full_text_string = updates['message']['text']
     if type == 'user':
         full_text_string = full_text_string.lower()
     params_list = re.findall(r'(\w+)\s*:\s*((?:\w+\b\s*)+)(?!\s*:)', full_text_string)
@@ -32,18 +32,6 @@ def extract_params(updates, type):
             return name.replace(' ', '')
     else:
         return ''
-
-
-# def extract_default(updates, type):
-#     full_text_string = updates['result'][0]['message']['text']
-#     update_dict = re.findall(r'(\w+):((?:(?!\w+:).)*)', full_text_string)
-#     cut_string = full_text_string.split(type + ":", 1)[1].split(" ")[0]
-#     if cut_string == '':
-#         cut_string = full_text_string.split(type + ": ", 1)[1].split(" ")[0]
-#     if "on_qa" not in cut_string and "on_dev" not in cut_string:
-#         if '_' in cut_string:
-#             cut_string = cut_string.replace("_", " ")
-#     return cut_string
 
 
 def extract_user(updates):
@@ -79,12 +67,11 @@ def extract_status(updates):
 
 
 def extract_assigned_to(updates):
-    full_text_string = updates['result'][0]['message']['text']
     try:
-        cut_string = full_text_string.split("assigned:", 1)[1]
+        cut_string = extract_params(updates, type='assigned_to')
     except IndexError:
-        return ''
-    return cut_string
+        return default_status
+    return cut_string.upper()
 
 
 def query_params(updates):
@@ -107,6 +94,6 @@ def send_query(query):
                                      reporter=selected_reporter,
                                      component=selected_component))
     if not bugs:
-        return "There are no bugs"
+        return "There are no " + selected_bug_status.lower() + " bugs"
     else:
         return bugs
