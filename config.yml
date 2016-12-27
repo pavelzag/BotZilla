@@ -1,7 +1,10 @@
 bugzilla-creds:
     user: ''
     password: ''
-    domain: '@domain.com'
-    bugzilla-url:  ''
+    domain: ''
+    bugzilla-url: ''
 telegram-creds:
-    token: 'TELEGRAM-TOKEN'
+    token: ''
+default-params:
+    default_product: ''
+    default_component: ''
