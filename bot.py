@@ -9,7 +9,8 @@ import configuration
 import bugzilla_call
 import bugs_handler
 
-TOKEN = configuration.get_config(parameter_type='telegram-creds',parameter_name='token')
+
+TOKEN = configuration.get_config(parameter_type='telegram-creds', parameter_name='token')
 update_id = None
 
 

@@ -5,13 +5,12 @@ import re
 URL = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='bugzilla-url')
 default_product = configuration.get_config(parameter_type='default-params', parameter_name='default_product')
 default_component = configuration.get_config(parameter_type='default-params', parameter_name='default_component')
+user = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='user')
+password = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='password')
+domain_name = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='domain')
 default_status = ""
 default_reporter = ""
 default_assignee = ""
-user = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='user')
-password = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='password')
-
-
 bzapi = bugzilla.Bugzilla(URL)
 
 
@@ -40,8 +39,7 @@ def extract_user(updates):
         if cut_string == '':
             return default_reporter
         if '@' not in cut_string:
-            requested_user_name = cut_string + configuration.get_config(parameter_type='bugzilla-creds',
-                                                                                 parameter_name='domain')
+            requested_user_name = cut_string + domain_name
     except IndexError:
         return default_reporter
     return requested_user_name
