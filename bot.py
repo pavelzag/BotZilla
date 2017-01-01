@@ -38,7 +38,6 @@ def worker(bot):
     global update_id
     for update in bot.getUpdates(offset=update_id, timeout=10):
         logging.debug('The text that was receieved was: <' + str(update.message.text) + ' >')
-        sys.stdout.flush()
         requested_user_name, requested_status, requested_assigned_to, requested_component = \
             bugzilla_call.query_params(update)
         bugzilla_query = bugzilla_call.query_builder(
@@ -53,6 +52,7 @@ def worker(bot):
         else:
             num_of_bugs = 0
         print('sending ' + str(num_of_bugs) + ' messages')
+        sys.stdout.flush()
         if num_of_bugs == 1:
             amtstring = ' is '
         else:
