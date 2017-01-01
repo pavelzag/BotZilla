@@ -35,6 +35,7 @@ def main():
 
 def worker(bot):
     global update_id
+    print('Just testing stuff')
     for update in bot.getUpdates(offset=update_id, timeout=10):
         requested_user_name, requested_status, requested_assigned_to, requested_component = \
             bugzilla_call.query_params(update)
