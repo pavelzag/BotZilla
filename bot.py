@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import sys
 import logging
 import telegram
 import time
@@ -22,7 +22,7 @@ def main():
         update_id = bot.getUpdates()[0].update_id
     except IndexError:
         update_id = None
-    logging.basicConfig(filename='botzilla_log_' + str(time.strftime("%d_%m_%Y")) + '.txt', level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(stream=sys.stdout, filename='botzilla_log_' + str(time.strftime("%d_%m_%Y")) + '.txt', level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     while True:
         try:
