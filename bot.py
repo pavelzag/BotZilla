@@ -38,6 +38,7 @@ def worker(bot):
     global update_id
     for update in bot.getUpdates(offset=update_id, timeout=10):
         logging.debug('The text that was receieved was: <' + str(update.message.text) + ' >')
+        sys.stdout.flush()
         requested_user_name, requested_status, requested_assigned_to, requested_component = \
             bugzilla_call.query_params(update)
         bugzilla_query = bugzilla_call.query_builder(
@@ -60,13 +61,16 @@ def worker(bot):
         if not isinstance(bugs_messages_to_send, str):
             logging.debug('The text that was sent was: ' + 'There' + amtstring + str(num_of_bugs) +
                                                                  ' ' + requested_status.lower() + ' bugs')
+            sys.stdout.flush()
             bot.sendMessage(chat_id=update.message.chat_id, text='There' + amtstring + str(num_of_bugs) +
                                                                  ' ' + requested_status.lower() + ' bugs')
             for bug in bugs_messages_to_send:
                 logging.debug('The text that was sent was: ' + bug)
+                sys.stdout.flush()
                 bot.sendMessage(chat_id=update.message.chat_id, text=bug)
         else:
             logging.debug('The text that was sent was: ' + bugs_messages_to_send)
+            sys.stdout.flush()
             bot.sendMessage(chat_id=update.message.chat_id, text=bugs_messages_to_send)
         update_id = update.update_id + 1
 
