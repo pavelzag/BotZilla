@@ -60,7 +60,8 @@ def worker(bot):
             bot.sendMessage(chat_id=update.message.chat_id, text='There' + amtstring + str(num_of_bugs) +
                                                                  ' ' + requested_status.lower() + ' bugs')
             for bug in bugs_messages_to_send:
-                    bot.sendMessage(chat_id=update.message.chat_id, text=bug)
+                logging.debug('The text that was sent was: ' + bug)
+                bot.sendMessage(chat_id=update.message.chat_id, text=bug)
         else:
             logging.debug('The text that was sent was: ' + bugs_messages_to_send)
             bot.sendMessage(chat_id=update.message.chat_id, text=bugs_messages_to_send)
