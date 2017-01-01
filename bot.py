@@ -55,11 +55,14 @@ def worker(bot):
         else:
             amtstring = ' are '
         if not isinstance(bugs_messages_to_send, str):
+            logging.debug('The text that was sent was: ' + 'There' + amtstring + str(num_of_bugs) +
+                                                                 ' ' + requested_status.lower() + ' bugs')
             bot.sendMessage(chat_id=update.message.chat_id, text='There' + amtstring + str(num_of_bugs) +
                                                                  ' ' + requested_status.lower() + ' bugs')
             for bug in bugs_messages_to_send:
                     bot.sendMessage(chat_id=update.message.chat_id, text=bug)
         else:
+            logging.debug('The text that was sent was: ' + bugs_messages_to_send)
             bot.sendMessage(chat_id=update.message.chat_id, text=bugs_messages_to_send)
         update_id = update.update_id + 1
 
