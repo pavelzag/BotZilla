@@ -36,6 +36,7 @@ def main():
 def worker(bot):
     global update_id
     for update in bot.getUpdates(offset=update_id, timeout=10):
+        logging.debug('The text that was receieved was: ' + update)
         requested_user_name, requested_status, requested_assigned_to, requested_component = \
             bugzilla_call.query_params(update)
         bugzilla_query = bugzilla_call.query_builder(
