@@ -1,1 +1,1 @@
-web: python bot.py --log-file - ${PORT}
+worker: python bot.py --log-file - ${PORT}
