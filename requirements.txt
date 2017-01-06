@@ -1,3 +1,4 @@
 pyyaml
 python-telegram-bot
 python-bugzilla
+pymongo
