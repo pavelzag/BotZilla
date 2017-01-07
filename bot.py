@@ -49,7 +49,7 @@ def extract_user_to_register(update):
 def worker(bot):
     global update_id
     for update in bot.getUpdates(offset=update_id, timeout=10):
-        if is_registration(update) and 'DYNO' not in os.environ:
+        if is_registration(update):
             print('registration')
             user_name = extract_user_to_register(update)
             result = dbconnector.add_user(update.message.from_user.id, user_name)
