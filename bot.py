@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
 import sys
 import logging
 import telegram
@@ -41,6 +40,14 @@ def is_registration(update):
         return False
 
 
+def is_mine(update):
+    text = update.message.text.lower()
+    if "my" in text:
+        return True
+    else:
+        return False
+
+
 def extract_user_to_register(update):
     text = update.message.text.lower()
     return text.split("register ",1)[1]
@@ -59,10 +66,14 @@ def worker(bot):
             update_id = update.update_id + 1
         else:
             print('not registration')
+            if is_mine(update):
+                registered_requested_user_name = dbconnector.get_user(update.message.from_user.id)
             logging.debug('The text that was receieved was: <' + str(update.message.text) + ' >')
             sys.stdout.flush()
             requested_user_name, requested_status, requested_assigned_to, requested_component = \
                 bugzilla_call.query_params(update)
+            if registered_requested_user_name:
+                requested_user_name = registered_requested_user_name
             bugzilla_query = bugzilla_call.query_builder(
                 component=requested_component,
                 status=requested_status,
