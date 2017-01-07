@@ -11,7 +11,7 @@ sys.stdout.flush()
 print("the configuration that was passed was: " + str(dbconfiguration))
 
 if 'DYNO' in os.environ:
-    client = MongoClient(os.environ['MONGOHQ_URL'])
+    client = MongoClient(os.environ['MONGODB_URI'])
     db = client.get_default_database()
 else:
     client = MongoClient(dbconfiguration)
