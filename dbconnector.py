@@ -1,9 +1,13 @@
 from pymongo import MongoClient
 import configuration
-client = MongoClient()
-db = client.test
+import logging
 
-domain_name = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='domain')
+domain_name = configuration.get_config(parameter_type='bugzilla-creds',parameter_name='domain')
+dbconfiguration = configuration.get_config(parameter_type='db-params', parameter_name='MONGODB_URI')
+logging.debug("the configuration that was passed was: " + str(dbconfiguration))
+print("the configuration that was passed was: " + str(dbconfiguration))
+client = MongoClient(dbconfiguration)
+db = client.test
 
 
 def add_user(telegram_user_id, user_name):

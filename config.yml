@@ -8,3 +8,5 @@ telegram-creds:
 default-params:
     default_product: ''
     default_component: ''
+db-params:
+    MONGODB_URI: ''
