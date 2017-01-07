@@ -2,14 +2,20 @@ from pymongo import MongoClient
 import configuration
 import logging
 import sys
+import os
 
 domain_name = configuration.get_config(parameter_type='bugzilla-creds',parameter_name='domain')
 dbconfiguration = configuration.get_config(parameter_type='db-params', parameter_name='MONGODB_URI')
 logging.debug("the configuration that was passed was: " + str(dbconfiguration))
 sys.stdout.flush()
 print("the configuration that was passed was: " + str(dbconfiguration))
-client = MongoClient(dbconfiguration)
-db = client.test
+
+if 'DYNO' in os.environ:
+    client = MongoClient(os.environ['MONGOHQ_URL'])
+    db = client.get_default_database()
+else:
+    client = MongoClient(dbconfiguration)
+    db = client.test
 
 
 def add_user(telegram_user_id, user_name):
