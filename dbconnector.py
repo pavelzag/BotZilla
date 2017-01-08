@@ -14,14 +14,14 @@ else:
 
 def add_user(telegram_user_id, user_name):
     user_name = user_name + domain_name
-    if not is_user_name_in(user_name):
+    if not is_user_name_in(user_name) and not is_user_id_in(telegram_user_id):
         db.registration.insert({'user_id': telegram_user_id, 'user_name': user_name})
         cursor = db.registration.find({'user_name': user_name})
         for document in cursor:
             print(document)
         return "The user " + user_name + " was registered"
     else:
-        return "The user " + user_name + " is already registered"
+        return "The user with " + str(telegram_user_id) + " telegram id is already registered"
 
 
 def remove_user(telegram_user_id, user_name):
