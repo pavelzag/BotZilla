@@ -68,6 +68,8 @@ def worker(bot):
             print('not registration')
             if is_mine(update):
                 registered_requested_user_name = dbconnector.get_user(update.message.from_user.id)
+            else:
+                registered_requested_user_name = ''
             logging.debug('The text that was receieved was: <' + str(update.message.text) + ' >')
             sys.stdout.flush()
             requested_user_name, requested_status, requested_assigned_to, requested_component = \

@@ -35,11 +35,11 @@ def extract_params(updates, type):
 
 def extract_user(updates):
     try:
-        cut_string = extract_params(updates, type='user').lower()
-        if cut_string == '':
+        requested_user_name = extract_params(updates, type='user').lower()
+        if requested_user_name == '':
             return default_reporter
-        if '@' not in cut_string:
-            requested_user_name = cut_string + domain_name
+        if '@' not in requested_user_name:
+            requested_user_name = requested_user_name + domain_name
     except IndexError:
         return default_reporter
     return requested_user_name
@@ -66,10 +66,12 @@ def extract_status(updates):
 
 def extract_assigned_to(updates):
     try:
-        cut_string = extract_params(updates, type='assigned_to')
+        requested_assignee = extract_params(updates, type='assigned_to').lower()
+        if '@' not in requested_assignee:
+            requested_assignee = requested_assignee + domain_name
     except IndexError:
         return default_status
-    return cut_string.upper()
+    return requested_assignee
 
 
 def query_params(updates):
