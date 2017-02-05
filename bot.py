@@ -61,7 +61,6 @@ def worker(bot):
             user_name = extract_user_to_register(update)
             result = dbconnector.add_user(update.message.from_user.id, user_name)
             logging.debug(result)
-            # sys.stdout.flush()
             bot.sendMessage(chat_id=update.message.chat_id, text=result)
             update_id = update.update_id + 1
         else:
@@ -71,7 +70,6 @@ def worker(bot):
             else:
                 registered_requested_user_name = ''
             logging.debug('The text that was received was: <' + str(update.message.text) + ' >')
-            # sys.stdout.flush()
             requested_user_name, requested_status, requested_assigned_to, requested_component = \
                 bugzilla_call.query_params(update)
             if registered_requested_user_name:
@@ -85,21 +83,16 @@ def worker(bot):
             bugs_messages_to_send = bugs_handler.bug_msg_builder(bugs_list)
             num_of_bugs = bugs_handler.bugs_count(bugs_messages_to_send)
             print('sending ' + str(num_of_bugs) + ' messages')
-            # sys.stdout.flush()
             amtstring = bugs_handler.amt_string(num_of_bugs)
             if not isinstance(bugs_messages_to_send, str):
-                logging.debug('The text that was sent was: ' + 'There' + amtstring + str(num_of_bugs) +
-                                                                     ' ' + requested_status.lower() + ' bugs')
-                # sys.stdout.flush()
-                bot.sendMessage(chat_id=update.message.chat_id, text='There' + amtstring + str(num_of_bugs) +
-                                                                     ' ' + requested_status.lower() + ' bugs')
+                text_to_send = 'There' + amtstring + str(num_of_bugs) + ' ' + requested_status.lower() + ' bugs'
+                logging.debug('The text that was sent was: ' + text_to_send)
+                bot.sendMessage(chat_id=update.message.chat_id, text= text_to_send)
                 for bug in bugs_messages_to_send:
                     logging.debug('The text that was sent was: ' + bug)
-                    # sys.stdout.flush()
                     bot.sendMessage(chat_id=update.message.chat_id, text=bug)
             else:
                 logging.debug('The text that was sent was: ' + bugs_messages_to_send)
-                # sys.stdout.flush()
                 bot.sendMessage(chat_id=update.message.chat_id, text=bugs_messages_to_send)
             update_id = update.update_id + 1
 

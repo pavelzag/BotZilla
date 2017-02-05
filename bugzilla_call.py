@@ -8,9 +8,6 @@ default_component = configuration.get_config(parameter_type='default-params', pa
 user = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='user')
 password = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='password')
 domain_name = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='domain')
-default_status = ""
-default_reporter = ""
-default_assignee = ""
 bzapi = bugzilla.Bugzilla(URL)
 
 
@@ -34,14 +31,9 @@ def extract_params(updates, type):
 
 
 def extract_user(updates):
-    try:
-        requested_user_name = extract_params(updates, type='user').lower()
-        if requested_user_name == '':
-            return default_reporter
-        if '@' not in requested_user_name:
-            requested_user_name = requested_user_name + domain_name
-    except IndexError:
-        return default_reporter
+    requested_user_name = extract_params(updates, type='user').lower()
+    if '@' not in requested_user_name:
+        requested_user_name = requested_user_name + domain_name
     return requested_user_name
 
 
@@ -57,20 +49,14 @@ def extract_component(updates):
 
 
 def extract_status(updates):
-    try:
-        cut_string = extract_params(updates, type='status')
-    except IndexError:
-        return default_status
+    cut_string = extract_params(updates, type='status')
     return cut_string.upper()
 
 
 def extract_assigned_to(updates):
-    try:
-        requested_assignee = extract_params(updates, type='assigned_to').lower()
-        if '@' not in requested_assignee:
-            requested_assignee = requested_assignee + domain_name
-    except IndexError:
-        return default_status
+    requested_assignee = extract_params(updates, type='assigned_to').lower()
+    if '@' not in requested_assignee:
+        requested_assignee = requested_assignee + domain_name
     return requested_assignee
 
 
