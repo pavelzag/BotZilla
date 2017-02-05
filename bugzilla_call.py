@@ -83,17 +83,8 @@ def query_params(updates):
 
 
 def send_query(query):
-    selected_reporter = query['email2']
-    if not selected_reporter:
-        return "A reporter must be selected"
-    selected_assigned_to = query['email1']
-    selected_bug_status = query['bug_status']
-    selected_component = query['component'][0]
-    bugs = bzapi.query(query_builder(status=selected_bug_status,
-                                     assigned_to=selected_assigned_to,
-                                     reporter=selected_reporter,
-                                     component=selected_component))
+    bugs = bzapi.query(query)
     if not bugs:
-        return "There are no " + selected_bug_status.lower() + " bugs"
+        return "There are no " + query['bug_status'].lower() + " bugs"
     else:
         return bugs
