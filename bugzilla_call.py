@@ -70,7 +70,7 @@ def query_params(updates):
 
 def send_query(query):
     # TODO Add Verification that there's a valid email here to prevent crash
-    normalize_component(query)
+    # normalize_component(query)
     bugs = bzapi.query(query)
     if not bugs:
         return "There are no " + query['bug_status'].lower() + " bugs"
