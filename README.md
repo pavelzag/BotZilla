@@ -59,6 +59,7 @@ docker run -tid botzilla
 
 - user: bugzilla_user status: new
 - component: Web_UI user: bugzilla_qa assigned_to: bugzilla_dev
+- my status: on_qa (for a registered user) component: Web_UI
 
 <!--![My image](username.github.com/repository/img/image.jpg)-->
 ![My image](https://raw.githubusercontent.com/pavelzag/BotZilla/master/Screenshots/Screenshot1.png)
