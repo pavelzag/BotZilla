@@ -70,8 +70,22 @@ def query_params(updates):
 
 def send_query(query):
     # TODO Add Verification that there's a valid email here to prevent crash
+    normalize_component(query)
     bugs = bzapi.query(query)
     if not bugs:
         return "There are no " + query['bug_status'].lower() + " bugs"
     else:
         return bugs
+
+
+def normalize_component(query):
+    # TODO Cache the products and the components to the DB
+    include_fields = ["name", "id"]
+    products = bzapi.getproducts(include_fields=include_fields)
+    selected_component = query['component'][0].lower()
+    components = bzapi.getcomponents(product=default_product)
+    lowered_components = [item.lower() for item in components]
+    if selected_component in lowered_components:
+        index = lowered_components.index(selected_component)
+        query['component'][0] = components[index]
+        return query
