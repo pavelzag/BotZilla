@@ -26,8 +26,8 @@ def add_user(telegram_user_id, user_name):
 
 def remove_user(telegram_user_id, user_name):
     user_name = user_name + domain_name
-    if not is_user_name_in(user_name):
-        db.registration.insert({'user_id': telegram_user_id, 'user_name': user_name})
+    if is_user_name_in(user_name):
+        db.registration.delete_one({'user_id': telegram_user_id, 'user_name': user_name})
         cursor = db.registration.find({'user_name': user_name})
         for document in cursor:
             print(document)

@@ -32,12 +32,14 @@ def main():
             update_id += 1
 
 
-def is_registration(update):
+def what_message(update):
     text = update.message.text.lower()
     if 'register' in text:
-        return True
+        return 'registration'
+    elif 'remove' in text:
+        return "remove"
     else:
-        return False
+        return ''
 
 
 def is_mine(update):
@@ -53,18 +55,27 @@ def extract_user_to_register(update):
     return text.split("register ",1)[1]
 
 
+def extract_user_to_remove(update):
+    text = update.message.text.lower()
+    return text.split("remove ",1)[1]
+
+
 def worker(bot):
     global update_id
     for update in bot.getUpdates(offset=update_id, timeout=10):
-        if is_registration(update):
+        if 'registration' in what_message(update):
             print('registration')
             user_name = extract_user_to_register(update)
             result = dbconnector.add_user(update.message.from_user.id, user_name)
             logging.debug(result)
             bot.sendMessage(chat_id=update.message.chat_id, text=result)
-            update_id = update.update_id + 1
+        elif 'remove' in what_message(update):
+            print('removal')
+            user_name = extract_user_to_remove(update)
+            result = dbconnector.remove_user(update.message.from_user.id, user_name)
+            logging.debug(result)
+            bot.sendMessage(chat_id=update.message.chat_id, text=result)
         else:
-            print('not registration')
             if is_mine(update):
                 registered_requested_user_name = dbconnector.get_user(update.message.from_user.id)
             else:
@@ -87,14 +98,14 @@ def worker(bot):
             if not isinstance(bugs_messages_to_send, str):
                 text_to_send = 'There' + amtstring + str(num_of_bugs) + ' ' + requested_status.lower() + ' bugs'
                 logging.debug('The text that was sent was: ' + text_to_send)
-                bot.sendMessage(chat_id=update.message.chat_id, text= text_to_send)
+                bot.sendMessage(chat_id=update.message.chat_id, text=text_to_send)
                 for bug in bugs_messages_to_send:
                     logging.debug('The text that was sent was: ' + bug)
                     bot.sendMessage(chat_id=update.message.chat_id, text=bug)
             else:
                 logging.debug('The text that was sent was: ' + bugs_messages_to_send)
                 bot.sendMessage(chat_id=update.message.chat_id, text=bugs_messages_to_send)
-            update_id = update.update_id + 1
+        update_id = update.update_id + 1
 
 
 if __name__ == '__main__':
