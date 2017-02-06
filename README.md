@@ -46,6 +46,15 @@ docker build -t botzilla .
 - Run the container:
 docker run -tid botzilla
 
+### Registration
+ - It is possible to register your username that belongs to your organization to avoid using the 'user:' query.
+ - For example: 'register john.doe' After registration it is possible to use the 'my' query instead of using 'user: john.doe' 
+
+### Deregistration
+
+- After registration, it is possible to unregister using the 'remove' query.
+- For example: 'remove john.doe'. The user will need to provide the 'user' query to receive replies
+
 ### Query examples:
 
 - user: bugzilla_user status: new
