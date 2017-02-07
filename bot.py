@@ -35,7 +35,7 @@ def main():
 def what_message(update):
     text = update.message.text.lower()
     if 'register' in text:
-        return 'registration'
+        return 'register'
     elif 'remove' in text:
         return "remove"
     else:
@@ -50,28 +50,23 @@ def is_mine(update):
         return False
 
 
-def extract_user_to_register(update):
+def extract_user(update, type):
     text = update.message.text.lower()
-    return text.split("register ",1)[1]
-
-
-def extract_user_to_remove(update):
-    text = update.message.text.lower()
-    return text.split("remove ",1)[1]
+    return text.split(type + " ", 1)[1]
 
 
 def worker(bot):
     global update_id
     for update in bot.getUpdates(offset=update_id, timeout=10):
-        if 'registration' in what_message(update):
-            print('registration')
-            user_name = extract_user_to_register(update)
+        if 'register' == what_message(update):
+            type = 'register'
+            user_name = extract_user(update, type=type)
             result = dbconnector.add_user(update.message.from_user.id, user_name)
             logging.debug(result)
             bot.sendMessage(chat_id=update.message.chat_id, text=result)
-        elif 'remove' in what_message(update):
-            print('removal')
-            user_name = extract_user_to_remove(update)
+        elif 'remove' == what_message(update):
+            type = 'remove'
+            user_name = extract_user(update, type=type)
             result = dbconnector.remove_user(update.message.from_user.id, user_name)
             logging.debug(result)
             bot.sendMessage(chat_id=update.message.chat_id, text=result)
