@@ -2,6 +2,8 @@ import bugzilla
 import configuration
 import logging
 import re
+from validate_email import validate_email
+
 
 URL = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='bugzilla-url')
 default_product = configuration.get_config(parameter_type='default-params', parameter_name='default_product')
@@ -70,13 +72,16 @@ def query_params(updates):
 
 
 def send_query(query):
-    # TODO Add Verification that there's a valid email here to prevent crash
-    normalize_component(query)
-    bugs = bzapi.query(query)
-    if not bugs:
-        return "There are no " + query['bug_status'].lower() + " bugs"
+    reporter_email = query['email2']
+    if validate_email(reporter_email):
+        normalize_component(query)
+        bugs = bzapi.query(query)
+        if not bugs:
+            return "There are no " + query['bug_status'].lower() + " bugs"
+        else:
+            return bugs
     else:
-        return bugs
+        return "Incorrect E-mail address. Please try again"
 
 
 def normalize_component(query):
@@ -91,3 +96,8 @@ def normalize_component(query):
         index = lowered_components.index(selected_component)
         query['component'][0] = components[index]
         return query
+
+
+def is_email_valid(email):
+    if validate_email(email=email):
+        return True

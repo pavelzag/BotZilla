@@ -9,7 +9,7 @@ def get_config(parameter_type, parameter_name):
         is_heroku = False
 
     if is_heroku:
-        return os.environ.get(parameter_name, 'aaaaa')
+        return os.environ.get(parameter_name, 'Theres\'s nothing here')
     else:
         with open("config.yml", 'r') as ymlfile:
             cfg = yaml.load(ymlfile)

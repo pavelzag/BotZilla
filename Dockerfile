@@ -6,5 +6,7 @@ ADD config.yml /
 ADD configuration.py /
 RUN pip install python-bugzilla
 RUN pip install pyyaml
-RUN pip install python-telegram-bot
+RUN pip install pymongo
+RUN pip install telegram
+RUN pip install validate_email
 CMD [ "python", "./bot.py" ]
