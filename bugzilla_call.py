@@ -1,5 +1,6 @@
 import bugzilla
 import configuration
+import logging
 import re
 
 URL = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='bugzilla-url')
@@ -70,7 +71,7 @@ def query_params(updates):
 
 def send_query(query):
     # TODO Add Verification that there's a valid email here to prevent crash
-    # normalize_component(query)
+    normalize_component(query)
     bugs = bzapi.query(query)
     if not bugs:
         return "There are no " + query['bug_status'].lower() + " bugs"
@@ -83,6 +84,7 @@ def normalize_component(query):
     include_fields = ["name", "id"]
     products = bzapi.getproducts(include_fields=include_fields)
     selected_component = query['component'][0].lower()
+    logging.debug('The default product is was: ' + default_product)
     components = bzapi.getcomponents(product=default_product)
     lowered_components = [item.lower() for item in components]
     if selected_component in lowered_components:
