@@ -59,14 +59,14 @@ def worker(bot):
     global update_id
     for update in bot.getUpdates(offset=update_id, timeout=10):
         if 'register' == what_message(update):
-            type = 'register'
-            user_name = extract_user(update, type=type)
+            message_type = 'register'
+            user_name = extract_user(update, type=message_type)
             result = dbconnector.add_user(update.message.from_user.id, user_name)
             logging.debug(result)
             bot.sendMessage(chat_id=update.message.chat_id, text=result)
         elif 'remove' == what_message(update):
-            type = 'remove'
-            user_name = extract_user(update, type=type)
+            message_type = 'remove'
+            user_name = extract_user(update, type=message_type)
             result = dbconnector.remove_user(update.message.from_user.id, user_name)
             logging.debug(result)
             bot.sendMessage(chat_id=update.message.chat_id, text=result)

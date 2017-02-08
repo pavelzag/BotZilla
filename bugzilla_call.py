@@ -96,8 +96,3 @@ def normalize_component(query):
         index = lowered_components.index(selected_component)
         query['component'][0] = components[index]
         return query
-
-
-def is_email_valid(email):
-    if validate_email(email=email):
-        return True
