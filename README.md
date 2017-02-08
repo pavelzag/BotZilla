@@ -8,6 +8,7 @@ Currently available the following query fields:
  - status
  - component
 
+### TBA Mongo
 
 ### Config file
 In order to work, Botzilla requires the following keys:
