@@ -3,20 +3,13 @@
 Botzilla is a simple Telegram bot that allows querying for Bugzilla data using simple text queries and getting a description of the bug and its corresponding link.
 Currently available the following query fields:
 
- - user
+ - user / -my (upon registration)
  - assigned_to
  - status
  - component
 
-### Dependencies:
-The following are required for Botzilla:
-```
-$ pip install python-bugzilla
-```
+### TBA Mongo
 
-```
-$ pip install pyyaml
-```
 ### Config file
 In order to work, Botzilla requires the following keys:
 
@@ -72,4 +65,5 @@ docker run -tid botzilla
 Botzilla is free to use. Any feedback is welcome!
 Feel free to ping me with any question or suggestion!
 Pavel Zagalsky
+pzagalsk@redhat.com
 @pavelzagalsky
