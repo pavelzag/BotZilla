@@ -52,7 +52,12 @@ def is_mine(update):
 
 def extract_user(update, type):
     text = update.message.text.lower()
-    return text.split(type + " ", 1)[1]
+    if ':' in text:
+        text = text.replace(':', '')
+    try:
+        return text.split(type + " ", 1)[1]
+    except IndexError:
+        return ''
 
 
 def worker(bot):
@@ -76,11 +81,17 @@ def worker(bot):
             else:
                 registered_requested_user_name = ''
             logging.debug('The text that was received was: <' + str(update.message.text) + ' >')
-            requested_user_name, requested_status, requested_assigned_to, requested_component = \
-                bugzilla_call.query_params(update)
+            requested_user_name, requested_status, requested_assigned_to, requested_component, \
+                requested_product = bugzilla_call.query_params(update)
+            if not requested_product and requested_component:
+                logging.debug('No product selected')
+                bot.sendMessage(chat_id=update.message.chat_id, text='No product selected')
+                update_id = update.update_id + 1
+                return
             if registered_requested_user_name:
                 requested_user_name = registered_requested_user_name
             bugzilla_query = bugzilla_call.query_builder(
+                product=requested_product,
                 component=requested_component,
                 status=requested_status,
                 reporter=requested_user_name,
