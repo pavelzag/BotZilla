@@ -89,6 +89,7 @@ def query_params(updates):
     bugzilla_status = extract_status(updates)
     bugzilla_assigned_to = extract_assigned_to(updates)
     bugzilla_product = extract_product(updates)
+    print('query params bugzilla product was ' + bugzilla_product)
     bugzilla_product = normalizer.normalize_product_new(bugzilla_product)
     bugzilla_component = extract_component(updates)
     bugzilla_component = normalizer.normalize_component_new(bugzilla_component, bugzilla_product)
