@@ -12,7 +12,7 @@ def normalize_component_new(selected_component, selected_product):
     # TODO Temporary fix. Figure out why sometimes None product
     print('default product is: ' + default_product + ' and default component is: ' + default_component)
     if not selected_product:
-        selected_product = default_product.lower()
+        selected_product = default_product
     components = bzapi.getcomponents(product=selected_product)
     lowered_components = [item.lower() for item in components]
     if not selected_component:
