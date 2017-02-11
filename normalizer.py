@@ -19,6 +19,7 @@ def normalize_component_new(selected_component, selected_product):
     if not selected_component:
         return ''
     if selected_component in lowered_components:
+        print('selected component ' + selected_component + ' is in there')
         index = lowered_components.index(selected_component)
         return components[index]
 
