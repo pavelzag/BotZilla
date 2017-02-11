@@ -1,5 +1,6 @@
 import bugzilla
 import configuration
+import normalizer
 import logging
 import re
 from validate_email import validate_email
@@ -74,7 +75,7 @@ def extract_assigned_to(updates):
     return requested_assignee
 
 
-def query_params(updates):
+def query_params_bk(updates):
     bugzilla_user = extract_user(updates)
     bugzilla_status = extract_status(updates)
     bugzilla_assigned_to = extract_assigned_to(updates)
@@ -83,15 +84,20 @@ def query_params(updates):
     return bugzilla_user, bugzilla_status, bugzilla_assigned_to, bugzilla_component, bugzilla_product
 
 
+def query_params(updates):
+    bugzilla_user = extract_user(updates)
+    bugzilla_status = extract_status(updates)
+    bugzilla_assigned_to = extract_assigned_to(updates)
+    bugzilla_product = extract_product(updates)
+    bugzilla_product = normalizer.normalize_product_new(bugzilla_product)
+    bugzilla_component = extract_component(updates)
+    bugzilla_component = normalizer.normalize_component_new(bugzilla_component, bugzilla_product)
+    return bugzilla_user, bugzilla_status, bugzilla_assigned_to, bugzilla_component, bugzilla_product
+
+
 def send_query(query):
     reporter_email = query['email2']
     if validate_email(reporter_email):
-        normalized_component = normalize_component(query)
-        normalized_product = normalize_product(query)
-        if not normalized_product:
-            normalized_product = default_product
-        query['component'][0] = normalized_component
-        query['product'][0] = normalized_product
         bugs = bzapi.query(query)
         if not bugs:
             return "There are no " + query['bug_status'].lower() + " bugs"
@@ -101,6 +107,7 @@ def send_query(query):
         return "Incorrect E-mail address. Please try again"
 
 
+# TODO Probably delete this
 def normalize_component(query):
     # TODO Cache the products and the components to the DB
     include_fields = ["name", "id"]
@@ -122,9 +129,6 @@ def normalize_component(query):
 
 def normalize_product(query):
     # TODO Cache the products and the components to the DB
-    include_fields = ["name", "id"]
-    products = bzapi.getproducts(include_fields=include_fields)
-    selected_component = query['component'][0].lower()
     selected_product = query['product'][0].lower()
     logging.debug('The selected product is : ' + selected_product)
     products = bzapi.getproducts()

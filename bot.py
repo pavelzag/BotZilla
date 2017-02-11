@@ -9,6 +9,7 @@ from time import sleep
 import configuration
 import bugzilla_call
 import bugs_handler
+import normalizer
 
 
 TOKEN = configuration.get_config(parameter_type='telegram-creds', parameter_name='token')
@@ -37,7 +38,9 @@ def what_message(update):
     if 'register' in text:
         return 'register'
     elif 'remove' in text:
-        return "remove"
+        return 'remove'
+    elif 'default_product' in text:
+        return 'default_product'
     else:
         return ''
 
@@ -50,7 +53,7 @@ def is_mine(update):
         return False
 
 
-def extract_user(update, type):
+def extract_field(update, type):
     text = update.message.text.lower()
     if ':' in text:
         text = text.replace(':', '')
@@ -65,16 +68,21 @@ def worker(bot):
     for update in bot.getUpdates(offset=update_id, timeout=10):
         if 'register' == what_message(update):
             message_type = 'register'
-            user_name = extract_user(update, type=message_type)
+            user_name = extract_field(update, type=message_type)
             result = dbconnector.add_user(update.message.from_user.id, user_name)
             logging.debug(result)
             bot.sendMessage(chat_id=update.message.chat_id, text=result)
         elif 'remove' == what_message(update):
             message_type = 'remove'
-            user_name = extract_user(update, type=message_type)
+            user_name = extract_field(update, type=message_type)
             result = dbconnector.remove_user(update.message.from_user.id, user_name)
             logging.debug(result)
             bot.sendMessage(chat_id=update.message.chat_id, text=result)
+        elif 'default_product' == what_message(update):
+            message_type = 'default_product'
+            default_product = extract_field(update, type=message_type)
+            print('Setting default product to ' + default_product)
+            normalized_product = normalizer.normalize_product_new(default_product)
         else:
             if is_mine(update):
                 registered_requested_user_name = dbconnector.get_user(update.message.from_user.id)
