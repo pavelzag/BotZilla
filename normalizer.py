@@ -10,6 +10,7 @@ default_component = configuration.get_config(parameter_type='default-params', pa
 
 def normalize_component_new(selected_component, selected_product):
     # TODO Temporary fix. Figure out why sometimes None product
+    print('default product is: ' + default_product + ' and default component is: ' + default_component)
     if not selected_product:
         selected_product = default_product.lower()
     components = bzapi.getcomponents(product=selected_product)
