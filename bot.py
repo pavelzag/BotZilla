@@ -92,6 +92,8 @@ def worker(bot):
             requested_user_name, requested_status, requested_assigned_to, requested_component, \
                 requested_product = bugzilla_call.query_params(update)
             if not requested_product and requested_component:
+                print('Requested product was: ' + requested_product)
+                print('Requested component was: ' + requested_component)
                 logging.debug('No product selected')
                 bot.sendMessage(chat_id=update.message.chat_id, text='No product selected')
                 update_id = update.update_id + 1
