@@ -9,6 +9,9 @@ default_component = configuration.get_config(parameter_type='default-params', pa
 
 
 def normalize_component_new(selected_component, selected_product):
+    # TODO Temporary fix. Figure out why sometimes None product
+    if not selected_product:
+        selected_product = default_product.lower()
     components = bzapi.getcomponents(product=selected_product)
     lowered_components = [item.lower() for item in components]
     if not selected_component:
