@@ -14,6 +14,7 @@ def normalize_component_new(selected_component, selected_product):
     if not selected_product:
         selected_product = default_product
     components = bzapi.getcomponents(product=selected_product)
+    print(components)
     lowered_components = [item.lower() for item in components]
     if not selected_component:
         return ''
