@@ -29,7 +29,7 @@ def normalize_component_new(selected_component, selected_product):
 
 def normalize_product_new(selected_product):
     if not selected_product:
-        selected_product = default_product.lower()
+        selected_product = default_product
     include_fields = ["name", "id"]
     products = bzapi.getproducts(include_fields=include_fields)
     logging.debug('The selected product is : ' + selected_product)
