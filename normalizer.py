@@ -43,12 +43,12 @@ def normalize_product_new(selected_product):
         if not isproductalpha(single_product1) and not isproductalpha(single_product2):
             print('name and id are numbers, need to skip this product ' + single_product1 + " " + single_product2)
         else:
-            if single_product1.isalpha():
-                logging.debug('single product1 is  : ' + str(single_product1))
+            if isproductalpha(single_product1):
                 single_product = single_product1
+                logging.debug('single product is  : ' + str(single_product))
             else:
                 single_product = single_product2
-                logging.debug('single product2 is : ' + str(single_product2))
+                logging.debug('single product is : ' + str(single_product))
             products_list.append(single_product)
     logging.debug('selected products are : ' + str(products_list))
     lowered_products = [item.lower() for item in products_list]
