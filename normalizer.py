@@ -44,7 +44,7 @@ def normalize_product_new(selected_product):
             print('name and id are numbers, need to skip this product ' + single_product1 + " " + single_product2)
         else:
             if single_product1.isalpha():
-                logging.debug('single product1 is : ' + str(single_product1))
+                logging.debug('single product1 is  : ' + str(single_product1))
                 single_product = single_product1
             else:
                 single_product = single_product2
