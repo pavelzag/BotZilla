@@ -50,7 +50,7 @@ def normalize_product_new(selected_product):
                 single_product = single_product2
                 logging.debug('single product2 is : ' + str(single_product2))
             products_list.append(single_product)
-            logging.debug('selected products are : ' + str(products_list))
+    logging.debug('selected products are : ' + str(products_list))
     lowered_products = [item.lower() for item in products_list]
     if selected_product in lowered_products:
         index = lowered_products.index(selected_product)
