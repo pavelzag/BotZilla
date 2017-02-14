@@ -37,6 +37,7 @@ def normalize_product_new(selected_product):
     products_list = []
     # Converting products dictionary to products list with product names
     for product in products:
+        logging.debug('The returning products are : ' + str(products))
         single_product1 = str(list(product.values())[0])
         single_product2 = str(list(product.values())[1])
         # Check which of the values is string and select only the string
