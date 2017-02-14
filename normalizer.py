@@ -37,7 +37,6 @@ def normalize_product_new(selected_product):
     products_list = []
     # Converting products dictionary to products list with product names
     for product in products:
-        logging.debug('The returning products are : ' + str(products))
         single_product1 = str(list(product.values())[0])
         single_product2 = str(list(product.values())[1])
         # Check which of the values is string and select only the string
@@ -45,9 +44,11 @@ def normalize_product_new(selected_product):
             print('name and id are numbers, need to skip this product ' + single_product1 + " " + single_product2)
         else:
             if single_product1.isalpha():
+                logging.debug('single product1 is : ' + str(single_product1))
                 single_product = single_product1
             else:
                 single_product = single_product2
+                logging.debug('single product2 is : ' + str(single_product2))
             products_list.append(single_product)
     lowered_products = [item.lower() for item in products_list]
     if selected_product in lowered_products:
