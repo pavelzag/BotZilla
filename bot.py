@@ -70,15 +70,16 @@ def worker(bot):
             message_type = 'register'
             user_name = extract_field(update, type=message_type)
             result = dbconnector.add_user(update.message.from_user.id, user_name)
-            logging.debug(result)
+            # logging.debug(result)
             bot.sendMessage(chat_id=update.message.chat_id, text=result)
         elif 'remove' == what_message(update):
             message_type = 'remove'
             user_name = extract_field(update, type=message_type)
             result = dbconnector.remove_user(update.message.from_user.id, user_name)
-            logging.debug(result)
+            # logging.debug(result)
             bot.sendMessage(chat_id=update.message.chat_id, text=result)
         elif 'default_product' == what_message(update):
+            # work in process
             message_type = 'default_product'
             default_product = extract_field(update, type=message_type)
             print('Setting default product to ' + default_product)

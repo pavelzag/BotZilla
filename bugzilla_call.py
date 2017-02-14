@@ -120,7 +120,7 @@ def normalize_component(query):
     normalized_product = normalize_product(query)
     if not selected_product:
         normalized_product = default_product
-        logging.debug('The default product is : ' + selected_product)
+        # logging.debug('The default product is : ' + selected_product)
     components = bzapi.getcomponents(product=normalized_product)
     lowered_components = [item.lower() for item in components]
     if not selected_component:
@@ -133,7 +133,7 @@ def normalize_component(query):
 def normalize_product(query):
     # TODO Cache the products and the components to the DB
     selected_product = query['product'][0].lower()
-    logging.debug('The selected product is : ' + selected_product)
+    # logging.debug('The selected product is : ' + selected_product)
     products = bzapi.getproducts()
     products_list = []
     # Converting products dictionary to products list with product names
