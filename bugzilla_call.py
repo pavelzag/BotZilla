@@ -75,21 +75,11 @@ def extract_assigned_to(updates):
     return requested_assignee
 
 
-def query_params_bk(updates):
-    bugzilla_user = extract_user(updates)
-    bugzilla_status = extract_status(updates)
-    bugzilla_assigned_to = extract_assigned_to(updates)
-    bugzilla_component = extract_component(updates)
-    bugzilla_product = extract_product(updates)
-    return bugzilla_user, bugzilla_status, bugzilla_assigned_to, bugzilla_component, bugzilla_product
-
-
 def query_params(updates):
     bugzilla_user = extract_user(updates)
     bugzilla_status = extract_status(updates)
     bugzilla_assigned_to = extract_assigned_to(updates)
     bugzilla_product = extract_product(updates)
-    # Here it's already nothing
     print('query params bugzilla product was ' + str(bugzilla_product))
     bugzilla_product = normalizer.normalize_product_new(bugzilla_product)
     print('query params after normalization was bugzilla product was ' + str(bugzilla_product))
@@ -108,50 +98,3 @@ def send_query(query):
             return bugs
     else:
         return "Incorrect E-mail address. Please try again"
-
-
-# TODO Probably delete this
-def normalize_component(query):
-    # TODO Cache the products and the components to the DB
-    include_fields = ["name", "id"]
-    products = bzapi.getproducts(include_fields=include_fields)
-    selected_component = query['component'][0].lower()
-    selected_product = query['product'][0].lower()
-    normalized_product = normalize_product(query)
-    if not selected_product:
-        normalized_product = default_product
-        # logging.debug('The default product is : ' + selected_product)
-    components = bzapi.getcomponents(product=normalized_product)
-    lowered_components = [item.lower() for item in components]
-    if not selected_component:
-        return ''
-    if selected_component in lowered_components:
-        index = lowered_components.index(selected_component)
-        return components[index]
-
-
-def normalize_product(query):
-    # TODO Cache the products and the components to the DB
-    selected_product = query['product'][0].lower()
-    # logging.debug('The selected product is : ' + selected_product)
-    products = bzapi.getproducts()
-    products_list = []
-    # Converting products dictionary to products list with product names
-    for product in products:
-        single_product1 = str(list(product.values())[0])
-        single_product2 = str(list(product.values())[1])
-        # Check which of the values is string and select only the string
-        if (not single_product1.isalpha()) and (not single_product2.isalpha()):
-            print('name and id are numbers, need to skip this product')
-        else:
-            if single_product1.isalpha():
-                single_product = single_product1
-            else:
-                single_product = single_product2
-            products_list.append(single_product)
-    lowered_products = [item.lower() for item in products_list]
-    if selected_product in lowered_products:
-        index = lowered_products.index(selected_product)
-        return products_list[index]
-    else:
-        print('something\'s wrong')
