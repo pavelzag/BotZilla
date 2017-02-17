@@ -50,7 +50,7 @@ def normalize_product_new(selected_product):
 
 
 def isproductalpha(product):
-    # TODO Fix this ugly monstrosity
+    # TODO Fix this ugly stuff
     if ' ' in product:
         return True
     elif '-' in product:
