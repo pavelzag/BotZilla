@@ -14,14 +14,11 @@ def normalize_component_new(selected_component, selected_product):
     if not selected_product:
         selected_product = default_product
     components = bzapi.getcomponents(product=selected_product)
-    # print(components)
     lowered_components = [item.lower() for item in components]
     if not selected_component:
         return ''
     if selected_component in lowered_components:
-        # print('selected component ' + selected_component + ' is in there')
         index = lowered_components.index(selected_component)
-        # print("the normalized component  is: " + components[index])
         return components[index]
     else:
         print('selected component is not in there')
@@ -29,32 +26,23 @@ def normalize_component_new(selected_component, selected_product):
 
 def normalize_product_new(selected_product):
     if not selected_product:
-        # logging.debug('The default product is : ' + str(default_product))
         selected_product = default_product
     include_fields = ["name", "id"]
     products = bzapi.getproducts(include_fields=include_fields)
-    # logging.debug('The selected product is : ' + selected_product)
     products_list = []
-    # Converting products dictionary to products list with product names
     for product in products:
         single_product1 = str(list(product.values())[0])
         single_product2 = str(list(product.values())[1])
-        # Check which of the values is string and select only the string
         if not isproductalpha(single_product1) and not isproductalpha(single_product2):
             print('name and id are numbers, need to skip this product ' + single_product1 + " " + single_product2)
         else:
             if isproductalpha(single_product1):
                 single_product = single_product1
-                # logging.debug('single product is  : ' + str(single_product))
             else:
                 single_product = single_product2
-                # logging.debug('single product is : ' + str(single_product))
             products_list.append(single_product)
-    # logging.debug('selected products are : ' + str(products_list))
     lowered_products = [item.lower() for item in products_list]
-    # logging.debug('lowered products are : ' + str(lowered_products))
     if selected_product.lower() in lowered_products:
-        # logging.debug('selected product ' + str(selected_product) + ' is in lowered products')
         index = lowered_products.index(selected_product.lower())
         return products_list[index]
     else:
