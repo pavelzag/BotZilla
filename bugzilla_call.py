@@ -6,7 +6,7 @@ import re
 from validate_email import validate_email
 
 
-URL = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='bugzilla-url')
+URL = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='bugzilla_url')
 default_product = configuration.get_config(parameter_type='default-params', parameter_name='default_product')
 default_component = configuration.get_config(parameter_type='default-params', parameter_name='default_component')
 user = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='user')

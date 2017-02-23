@@ -2,7 +2,7 @@ import bugzilla
 import configuration
 import logging
 
-URL = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='bugzilla-url')
+URL = configuration.get_config(parameter_type='bugzilla-creds', parameter_name='bugzilla_url')
 bzapi = bugzilla.Bugzilla(URL)
 default_product = configuration.get_config(parameter_type='default-params', parameter_name='default_product')
 default_component = configuration.get_config(parameter_type='default-params', parameter_name='default_component')

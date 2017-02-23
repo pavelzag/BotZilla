@@ -1,12 +1,12 @@
 bugzilla-creds:
-    user: ''
-    password: ''
-    domain: ''
-    bugzilla-url: ''
+    user:
+    password:
+    domain:
+    bugzilla_url:
 telegram-creds:
-    token: ''
+    token:
 default-params:
-    default_product: ''
-    default_component: ''
+    default_product:
+    default_component:
 db-params:
     MONGODB_URI: ''
