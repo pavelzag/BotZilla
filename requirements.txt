@@ -1,4 +1,4 @@
-pyyaml==0.1
+pyyaml
 python-telegram-bot
 python-bugzilla
 pymongo
