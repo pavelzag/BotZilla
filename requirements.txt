@@ -4,4 +4,4 @@ python-bugzilla
 pymongo
 telegram
 validate_email
-werkzeug==0.15
+werkzeug==0.1
